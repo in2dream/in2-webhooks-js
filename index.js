@@ -27,7 +27,7 @@ function Webhook(adapter, config) {
             if (! req.isValidXHub()) return next();
             const event = self.adapter.retrieveEvent(req);
             if (! event) return next();
-            console.log('EVENT:' + event);
+
             self.adapter.data(req, function(err, data) {
                 if (err) return next(err);
                 self.emit(event, data);
@@ -70,16 +70,13 @@ Webhook.prototype.run = function(config) {
                     }
                     return res.end('OK');
                 });
+
             });
         self.server.listen(port, '0.0.0.0', function(){
             console.log('listen on ' + port);
         });
-        self.server.on('data', function(chunk) {
-            console.log(chunk.toString());
-        })
     }
 };
-
 
 exports.create = function(adapter, config) {
     return new Webhook(adapter, config);

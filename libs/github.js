@@ -24,8 +24,6 @@ Github.prototype.verifySignature = function(signature, payload) {
     const sign = signature.split('=').pop();
     const hash = crypto.createHmac(alg, self.secret).update(payload, 'utf8').digest('hex');
     if (typeof(payload) == 'object') payload = JSON.stringify(payload);
-    console.log(hash);
-    console.log(sign);
     return hash === sign;
 };
 
