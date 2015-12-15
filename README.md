@@ -3,6 +3,17 @@
 Simple webhooks handle server.
 
 ## How to use
+
+install with npm
+
+```
+npm install in2-webhooks-js
+```
+
+### Samples
+
+See `/examples`.
+
 ```javascript
 'use strict';
 const Webhook = require('in2-webhooks-js');
@@ -31,3 +42,8 @@ webhook.on('push', function(payload) {
 
 webhook.run();
 ```
+
+## TODO
+
+- Test codes.
+- Adapter switcher.
