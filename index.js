@@ -53,6 +53,8 @@ Webhook.prototype.run = function(config) {
     if (! self.server) {
         self.server = http.createServer(function(req, res) {
 
+                if (/(.*)\/favicon\.ico/.test(req.url)) return res.end('OK');
+
                 var body = '';
                 req.setEncoding('utf8');
                 req.on('data', function(chunk) {
