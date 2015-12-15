@@ -46,6 +46,7 @@ Webhook.prototype.run = function(config) {
     config = config || {};
     const self = this;
     const port = config.port || self.config.port || process.env.PORT || 8888;
+    const hostname = config.hostname || self.config.hostname || '0.0.0.0';
     const protocol = config.protocol || self.config.protocol || 'http';
 
     const http = require(protocol);
@@ -74,7 +75,7 @@ Webhook.prototype.run = function(config) {
                 });
 
             });
-        self.server.listen(port, '0.0.0.0', function(){
+        self.server.listen(port, hostname, function(){
             console.log('listen on ' + port);
         });
     }
