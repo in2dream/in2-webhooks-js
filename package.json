@@ -1,5 +1,5 @@
 {
-  "name": "in2-webhooks",
+  "name": "in2-webhooks-js",
   "version": "0.1.0",
   "description": "simple webhooks server",
   "main": "index.js",

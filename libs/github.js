@@ -14,6 +14,10 @@ Github.prototype.retrieveEvent = function(req) {
     return req.headers['X-Github-Event'.toLowerCase()];
 };
 
+Github.prototype.retrieveSignature = function(req) {
+    return req.headers['X-Hub-Signature'.toLowerCase()];
+};
+
 Github.prototype.verifySignature = function(signature, payload) {
     const self = this;
     const alg = signature.split('=').shift();

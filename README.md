@@ -1,8 +1,13 @@
+# in2-webhooks-js
+
+Simple webhooks handle server.
+
+## How to use
+```javascript
 'use strict';
+const Webhook = require('in2-webhooks-js');
 
-const Webhook = require('../');
-
-// create a adapter
+// create an adapter
 var adapter = Webhook.GithubAdapter.create({ secret: 'test' });
 
 // create a web hook
@@ -11,15 +16,13 @@ var webhook = Webhook.create(adapter, { port: 2626 });
 // custom middleware
 webhook.use(function(req, res, next) {
     console.log('Hello');
-    console.log(req.body);
     return next();
 });
 
-// events
+// event handlers
 webhook.on('ping', function(payload) {
    console.log(payload);
 });
-
 webhook.on('push', function(payload) {
    console.log(payload.commits.map(function(c){
        return c.message;
@@ -27,3 +30,4 @@ webhook.on('push', function(payload) {
 });
 
 webhook.run();
+```

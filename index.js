@@ -13,19 +13,18 @@ function Webhook(adapter, config) {
     this.adapter = adapter;
     this.middlewares = [
         function(req, res, next) {
-            const signature = req.headers['X-Hub-Signature'.toLowerCase()];
-            console.log(req.headers);
+            const signature = adapter.retrieveSignature(req);
             req.isXHub = function () {
                 return signature !== undefined && signature.length > 0;
             };
-            req.isValidXhub = function () {
+            req.isValidXHub = function () {
                 if (!req.isXHub()) return false;
                 return adapter.verifySignature(signature, req.body);
             };
             return next();
         },
         function(req, res, next) {
-            if (! req.isValidXhub()) return next();
+            if (! req.isValidXHub()) return next();
             const event = self.adapter.retrieveEvent(req);
             if (! event) return next();
             console.log('EVENT:' + event);
@@ -53,6 +52,7 @@ Webhook.prototype.run = function(config) {
 
     if (! self.server) {
         self.server = http.createServer(function(req, res) {
+
                 var body = '';
                 req.setEncoding('utf8');
                 req.on('data', function(chunk) {
@@ -61,6 +61,7 @@ Webhook.prototype.run = function(config) {
                 req.on('end', function() {
                     req.body = body;
                 });
+
                 async.eachSeries(self.middlewares, function(m, done) {
                     return m(req, res, done);
                 }, function(err) {
