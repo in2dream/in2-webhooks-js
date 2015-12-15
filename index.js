@@ -14,6 +14,7 @@ function Webhook(adapter, config) {
     this.middlewares = [
         function(req, res, next) {
             const signature = req.headers['X-Hub-Signature'.toLowerCase()];
+            console.log(req.headers);
             req.isXHub = function () {
                 return signature !== undefined && signature.length > 0;
             };
@@ -27,6 +28,7 @@ function Webhook(adapter, config) {
             if (! req.isValidXhub()) return next();
             const event = self.adapter.retrieveEvent(req);
             if (! event) return next();
+            console.log('EVENT:' + event);
             self.adapter.data(req, function(err, data) {
                 if (err) return next(err);
                 self.emit(event, data);
@@ -68,7 +70,7 @@ Webhook.prototype.run = function(config) {
                     return res.end('OK');
                 });
             });
-        self.server.listen(port, '127.0.0.1', function(){
+        self.server.listen(port, '0.0.0.0', function(){
             console.log('listen on ' + port);
         });
         self.server.on('data', function(chunk) {

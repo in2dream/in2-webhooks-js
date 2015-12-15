@@ -18,12 +18,14 @@ Github.prototype.verifySignature = function(signature, payload) {
     const self = this;
     const alg = signature.split('=').shift();
     const sign = signature.split('=').pop();
-
+    const hash = crypto.createHmac(alg, self.secret).update(payload, 'utf8').digest('hex');
     if (typeof(payload) == 'object') payload = JSON.stringify(payload);
-    return [alg, '=', crypto.createHmac(alg, self.secret).update(payload, 'utf8').digest('hex')].join('') === sign;
+    console.log(hash);
+    console.log(sign);
+    return hash === sign;
 };
 
-Github.prototype.data = function(event, done) {
+Github.prototype.data = function(req, done) {
     try {
         const parsed_body = JSON.parse(req.body);
         return done(null, parsed_body.payload);
